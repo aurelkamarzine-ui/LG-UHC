@@ -1,0 +1,29 @@
+name: LGUHC
+version: "1.0"
+author: Sfakeur
+main: fr.sfakeur.lguhc.LGUHC
+permissions:
+  lguhc.admin:
+    description: Accès aux commandes et menus d’admin LGUHC
+    default: op
+commands:
+  sauvegarder:
+    description: Sauvegarder une config
+    usage: /sauvegarder <nom>
+  charger:
+    description: Charger une config
+    usage: /charger <nom>
+  mes_saves:
+    description: Voir mes sauvegardes
+  delete_save:
+    description: Supprimer une sauvegarde personnelle.
+    usage: /delete_save <nom>
+    permission: lguhc.delete_save
+    permission-message: Vous n'avez pas la permission de faire cela.
+  lgstart:
+    description: Commande principale LG UHC
+    usage: /lgstart
+    permission: lguhc.admin
+  lg:
+    description: Capacités de rôle (observer, analyser, ...)
+    usage: /<command> <sub> [args]
