@@ -49,17 +49,17 @@ public class UHCConfig implements Listener {
     private static final String TITLE_BORDURE    = ChatColor.AQUA   + "" + ChatColor.BOLD + "Bordure";
 
     // === États Timers ===
-    private int idxCycle = 2; // 0:5m,1:10m,2:20m
-    private final int[] CYCLE_MIN = {5,10,20};
+    private int idxCycle = 3; // 0:1m,1:5m,2:10m,3:20m
+    private final int[] CYCLE_MIN = {1,5,10,20};
 
-    private int idxPvp = 0; // 0: 1min, 1: Jour 2
+    private int idxPvp = 1; // 0: 1min, 1: Jour 2
     // On garde les 2 modes par nom pour l’affichage
     private final String[] PVP_MODES = {"1 min", "Episode 2"};
 
-    private int idxAnnonce = 0; // 0: 30s, 1: Jour 2
+    private int idxAnnonce = 1; // 0: 30s, 1: Jour 2
     private final String[] ANN_MODES = {"30 sec", "Episode 2"};
 
-    private int idxMeetup = 3; // 0..11
+    private int idxMeetup = 9; // 0..11
     private final int[] MEETUP_MIN = {40,45,50,55,60,65,70,75,80,90,100,110,120};
 
     // === États Limites (enchants) ===
@@ -72,19 +72,18 @@ public class UHCConfig implements Listener {
     private int knockback    = 0; // 0..2
 
     // === États Inventaires ===
-    private ItemStack[] startInvTemplate = null; // inventaire de départ (peut être null = par défaut)
     private ItemStack[] deathExtraTemplate = new ItemStack[27]; // ce que l’host configure dans l’éditeur
 
     // === États Bordure ===
     private final int[] BORDER_SIZES = {50,100,200,300,400,500,750,1000,1250,1500,1750,2000,2250,2500};
-    private int idxBorderStart = 7; // 500 par défaut
-    private int idxBorderEnd   = 2; // 200 par défaut (doit rester < start)
+    private int idxBorderStart = 7; // 1000 par défaut
+    private int idxBorderEnd   = 3; // 300 par défaut (doit rester < start)
 
     private final int[] BORDER_TIMES_MIN = {10,20,40,60,80,100,120,130,140,150};
-    private int idxBorderTime = 0;
+    private int idxBorderTime = 3;
 
     private final double[] BORDER_SPEEDS = {0.5,1.0,1.5,2.0};
-    private int idxBorderSpeed = 1;
+    private int idxBorderSpeed = 0;
 
     // Helper cycle
     private int incIdx(int cur, int max) { return (cur + 1) % max; }
@@ -101,7 +100,7 @@ public class UHCConfig implements Listener {
     
  // --- Timers: durée d'un épisode ---
     private static final int[] EPISODE_MIN = {5, 10, 15, 20};
-    private int idxEpisode = 1; // par défaut 10 min (index 1)
+    private int idxEpisode = 3; // par défaut 20 min (index 3)
 
  // UHCConfig.java
     public int getBorderStartRadius() { return BORDER_SIZES[idxBorderStart]; } // rayon
@@ -130,9 +129,9 @@ public class UHCConfig implements Listener {
 
         inv.setItem(20, makeItem(Material.WATCH, ChatColor.GOLD + "Timers"));
         inv.setItem(22, makeItem(Material.BOOK, ChatColor.YELLOW + "Scénarios"));   // (si tes scénarios LG sont ailleurs, garde juste l’entrée)
-        inv.setItem(24, makeItem(Material.ANVIL, ChatColor.GREEN + "Limites"));
+        inv.setItem(24, makeItem(Material.ANVIL, ChatColor.BLUE + "Limites"));
         inv.setItem(30, makeItem(Material.CHEST, ChatColor.GREEN + "Inventaire"));
-        inv.setItem(32, makeItem(Material.MAP, ChatColor.AQUA + "Bordure"));
+        inv.setItem(32, makeItem(Material.BARRIER, ChatColor.AQUA + "Bordure"));
         inv.setItem(40, makeItem(Material.PISTON_BASE, ChatColor.GREEN + "Prégénération du monde"));
 
 
@@ -215,25 +214,25 @@ public class UHCConfig implements Listener {
 
         // Rangée du haut : protections
         inv.setItem(10, withLore(makeItem(Material.IRON_CHESTPLATE, ChatColor.YELLOW + "Protection Fer : " + ChatColor.AQUA + protFer),
-                ChatColor.GRAY + "0..4 | G/D = +/-"));
+                ChatColor.GRAY));
         inv.setItem(11, withLore(makeItem(Material.DIAMOND_CHESTPLATE, ChatColor.YELLOW + "Protection Diamant : " + ChatColor.AQUA + protDia),
-                ChatColor.GRAY + "0..4 | G/D = +/-"));
+                ChatColor.GRAY));
 
         // Sharpness
-        inv.setItem(13, withLore(makeItem(Material.IRON_SWORD, ChatColor.YELLOW + "Tranchant Fer : " + ChatColor.AQUA + sharpFer),
-                ChatColor.GRAY + "0..5 | G/D = +/-"));
-        inv.setItem(14, withLore(makeItem(Material.DIAMOND_SWORD, ChatColor.YELLOW + "Tranchant Diamant : " + ChatColor.AQUA + sharpDia),
-                ChatColor.GRAY + "0..5 | G/D = +/-"));
+        inv.setItem(13, withLore(makeItem(Material.IRON_SWORD, ChatColor.YELLOW + "Sharpness Fer : " + ChatColor.AQUA + sharpFer),
+                ChatColor.GRAY));
+        inv.setItem(14, withLore(makeItem(Material.DIAMOND_SWORD, ChatColor.YELLOW + "Sharpness Diamant : " + ChatColor.AQUA + sharpDia),
+                ChatColor.GRAY));
 
         // Arcs
         inv.setItem(16, withLore(makeItem(Material.BOW, ChatColor.YELLOW + "Power : " + ChatColor.AQUA + power),
-                ChatColor.GRAY + "0..5 | G/D = +/-"));
+                ChatColor.GRAY));
 
         // Rangée du bas : Punch + Knockback
         inv.setItem(20, withLore(makeItem(Material.FEATHER, ChatColor.YELLOW + "Punch : " + ChatColor.AQUA + punch),
-                ChatColor.GRAY + "0..2 | G/D = +/-"));
+                ChatColor.GRAY));
         inv.setItem(24, withLore(makeItem(Material.STICK, ChatColor.YELLOW + "Knockback : " + ChatColor.AQUA + knockback),
-                ChatColor.GRAY + "0..2 | G/D = +/-"));
+                ChatColor.GRAY));
 
         p.openInventory(inv);
     }
@@ -381,13 +380,13 @@ public class UHCConfig implements Listener {
                     openLimitesMenu(p);
                     return;
 
-                case "Tranchant (Fer)":
+                case "Sharpness (Fer)":
                     if (left)  sharpFer = incWrap(sharpFer, 0, 5);
                     if (right) sharpFer = decWrap(sharpFer, 0, 5);
                     openLimitesMenu(p);
                     return;
 
-                case "Tranchant (Diamant)":
+                case "Sharpness (Diamant)":
                     if (left)  sharpDia = incWrap(sharpDia, 0, 5);
                     if (right) sharpDia = decWrap(sharpDia, 0, 5);
                     openLimitesMenu(p);
@@ -426,14 +425,17 @@ public class UHCConfig implements Listener {
         if (title.equalsIgnoreCase(ChatColor.stripColor(TITLE_INVENTAIRE))) {
             if (cur.getType() == Material.CHEST && name.startsWith("Inventaire de départ")) {
                 if (left) {
-                    // Save inv actuel
-                    startInvTemplate = p.getInventory().getContents().clone();
-                    p.sendMessage(ChatColor.GREEN + "Inventaire de départ enregistré depuis votre inventaire.");
+                    // Ouvre l'éditeur GUI 36 slots
+                    p.closeInventory();
+                    openStartInvEditor(p);
                 } else if (right) {
-                    startInvTemplate = null;
+                    // Efface le template
+                    startMainTemplate = new ItemStack[36];
+                    startArmorTemplate = new ItemStack[4];
                     p.sendMessage(ChatColor.YELLOW + "Inventaire de départ effacé.");
+                    openInventaireMenu(p);
                 }
-                openInventaireMenu(p); return;
+                return;
             }
             if (cur.getType() == Material.ENDER_CHEST && name.startsWith("Inventaire de mort")) {
                 if (left) {
@@ -571,9 +573,14 @@ public class UHCConfig implements Listener {
         inv.setItem(4, glass);
         inv.setItem(22, makeBack());
 
-        String startLore = (startInvTemplate == null)
-                ? ChatColor.RED + "Aucun inventaire défini."
-                : ChatColor.GREEN + "Inventaire défini.";
+        boolean hasStartInv = false;
+        for (ItemStack it : startMainTemplate) { if (it != null) { hasStartInv = true; break; } }
+        if (!hasStartInv) {
+            for (ItemStack it : startArmorTemplate) { if (it != null) { hasStartInv = true; break; } }
+        }
+        String startLore = hasStartInv
+        ? ChatColor.GREEN + "Inventaire défini."
+        : ChatColor.RED + "Aucun inventaire défini.";
 
         inv.setItem(11, withLore(
                 makeItem(Material.CHEST, ChatColor.YELLOW + "Inventaire de départ"),
